@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Health Hub</title>
+    <!-- Tailwind CSS CDN for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-image: url('static/images/back_img.png');
+            background-size: cover;
+            background-position: center;
+        }
+        .bg-overlay {
+            background-color: rgba(0, 0, 0, 0.6);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center text-white">
+    <div class="bg-overlay absolute inset-0"></div>
+
+    <div class="relative z-10 text-center p-6 md:p-12 max-w-4xl mx-auto">
+        <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight mb-4 animate-pulse">
+            Your Heart Health, Simplified.
+        </h1>
+        <p class="text-lg sm:text-xl font-light mb-8">
+            Take a proactive step towards understanding your heart's well-being. Our easy-to-use tool provides an instant health assessment based on key indicators.
+        </p>
+        <a href="/form" class="inline-block bg-white text-blue-600 font-bold py-3 px-8 rounded-full shadow-lg hover:bg-gray-100 transition duration-300 ease-in-out transform hover:scale-105">
+            Check Your Heart
+        </a>
+    </div>
+
+</body>
+</html>
