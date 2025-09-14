@@ -25,7 +25,7 @@ This app allows users to input patient attributes such as age, chest pain type, 
 
 | Home Page | Prediction Form | Prediction Report |
 |-----------|----------------|------------------|
-| ![Home](images/home.png) | ![Form](images/form.png) | ![Report](images/report.png) |
+| ![Home](static/images/home_img.png) | ![Form](static/images/forms_img.png) | ![Report](static/images/report_img.png) |
 
 ---
 
