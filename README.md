@@ -1,3 +1,12 @@
+<p>
+  <h2 style="font-size:25px;">Test My Model 👉
+   <a href="https://heart-disease-detection-jeet.onrender.com" target="_blank">
+       Heart Disease App
+   </a></h2>
+</p>
+
+---
+
 # Heart Disease Prediction App
 
 A web application for predicting the presence of heart disease using a trained **Random Forest** machine learning model. Built with **Flask**, this app provides a user-friendly interface for entering patient data and viewing prediction results.
