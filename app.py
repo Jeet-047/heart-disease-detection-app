@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 import joblib
 import numpy as np
+import pandas as pd
 import os
 
 """
@@ -64,10 +65,14 @@ def predict():
         thal = int(request.form['thal'])
 
         # Create a numpy array with the input features
+        feature_names = ['age', 'cp', 'trestbps', 'chol', 'thalach', 'oldpeak', 'ca', 'thal']
         features = np.array([[age, cp, trestbps, chol, thalach, oldpeak, ca, thal]])
 
+        # Create a dataframe
+        input_df = pd.DataFrame(features, columns=feature_names)
+
         # Make a prediction
-        prediction = model.predict(features)
+        prediction = model.predict(input_df)
 
         result_text = "Presence of Heart Disease" if prediction[0] == 0 else "No Heart Disease"
 
