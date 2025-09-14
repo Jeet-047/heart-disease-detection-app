@@ -21,11 +21,17 @@ This app allows users to input patient attributes such as age, chest pain type, 
 
 ## 📸 App Screenshots
 
-> _Add your own screenshots here!_
+| <h2 style="font-size:28px;">Home Page</h2> |
+|-----------|
+| ![Home](static/images/home_img.png) |
 
-| Home Page | Prediction Form | Prediction Report |
-|-----------|----------------|------------------|
-| ![Home](static/images/home_img.png) | ![Form](static/images/forms_img.png) | ![Report](static/images/report_img.png) |
+| <h2 style="font-size:28px;">Data Collection Form Pages</h2> |
+|----------------|
+| ![Form](static/images/forms_img.png) |
+
+| <h2 style="font-size:28px;">Prediction Report Page</h2> |
+|------------------|
+| ![Report](static/images/report_img.png) |
 
 ---
 
