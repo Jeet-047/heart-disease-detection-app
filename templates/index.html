@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" style="scroll-behavior: smooth;">
+<html lang="en" style="scroll-behavior: smooth;" class="overflow-x-hidden">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,55 +12,181 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
+            background-color: #000000;
+        }
+
+        .background-container {
             background-image: url("/static/images/back_img.png");
             background-size: cover;
             background-position: center;
+            background-attachment: fixed;
+            background-color: #000000;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
         }
-        .bg-overlay {
+
+        .full-screen-overlay {
             background-color: rgba(0, 0, 0, 0.6);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
         }
-        /* Fix for mobile scrolling */
-        @media (max-width: 640px) {
-            body {
-                height: 100vh;
-                overflow: hidden;
+
+        .social-link {
+            transition: color 0.3s;
+        }
+
+        .social-link:hover {
+            color: #2563eb;
+        }
+
+        .dropdown-menu {
+            transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+            transform: translateY(10px);
+            opacity: 0;
+            pointer-events: none;
+            width: 200px;
+        }
+
+        .dropdown-menu.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        
+        .dropdown-menu a:hover {
+            background-color: #f3f4f6; /* Hover background color */
+            border-radius: 0.375rem;
+        }
+
+        /* Mobile-specific adjustments for smaller screens */
+        @media (max-width: 450px) {
+            .navbar-title {
+                font-size: small;
+            }
+
+            .projects-button {
+                padding-top: 0.2rem;
+                padding-bottom: 0.2rem;
+                padding-left: 0.4rem;
+                padding-right: 0.4rem;
+                font-size: xx-small;
+            }
+
+            .projects-button-text {
+                font-size: xx-small;
+            }
+
+            .dropdown-menu {
+                width: 140px; /* Reduced width for the dropdown menu */
+            }
+
+            .dropdown-menu a {
+                font-size: x-small; /* Reduced font size for dropdown links */
             }
         }
+
+        /* Adjustments for larger screens (default behavior) */
+        @media (min-width: 451px) {
+            .dropdown-menu {
+                width: auto;
+            }
+        }
+        /* Pulse animation for the button */
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+        .pulse-animation {
+            animation: pulse 1s infinite;
+        }
+        
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center text-white">
-    <div class="bg-overlay absolute inset-0"></div>
+<body class="text-white overflow-x-hidden">
 
-    <div class="relative z-10 text-center p-6 md:p-12 max-w-2xl lg:max-w-4xl mx-auto">
-        <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight mb-4 animate-pulse">
-            Your Heart Health, Simplified.
-        </h1>
-        <p class="text-lg sm:text-xl font-light mb-8">
-            Take a proactive step towards understanding your heart's well-being. Our easy-to-use tool provides an instant health assessment based on key indicators.
-        </p>
-        <a href="/form" class="inline-block bg-white text-blue-600 font-bold py-3 px-8 rounded-full shadow-lg hover:bg-gray-100 transition duration-300 ease-in-out transform hover:scale-105">
-            Check Your Heart
-        </a>
-    </div>
+    <!-- Fixed Background Container -->
+    <div class="background-container"></div>
+    <div class="full-screen-overlay"></div>
 
-    <!-- Social Links Section -->
-    <div class="absolute bottom-8 left-0 right-0 z-10 text-center">
-        <p class="text-white text-lg font-light mb-4">Let's Connect</p>
-        <div class="flex justify-center space-x-6">
-            <a href="mailto:jeet0912majumder@gmail.com" class="text-white hover:text-blue-400 transition-colors duration-300 transform hover:scale-110" aria-label="Email">
-                <i class="fas fa-envelope text-2xl"></i>
-            </a>
-            <a href="https://github.com/Jeet-047" class="text-white hover:text-blue-400 transition-colors duration-300 transform hover:scale-110" aria-label="GitHub">
-                <i class="fab fa-github text-2xl"></i>
-            </a>
-            <a href="https://www.linkedin.com/in/jeet0912majumder/" class="text-white hover:text-blue-400 transition-colors duration-300 transform hover:scale-110" aria-label="LinkedIn">
-                <i class="fab fa-linkedin text-2xl"></i>
-            </a>
-            <a href="https://www.kaggle.com/jeet047" class="text-white hover:text-blue-400 transition-colors duration-300 transform hover:scale-110" aria-label="Kaggle">
-                <i class="fab fa-kaggle text-2xl"></i>
+    <!-- Navigation Bar -->
+    <nav class="bg-[#1a202c] backdrop-blur-md p-4 relative top-0 inset-x-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <!-- Left side: Logo and Title -->
+            <div class="flex items-center space-x-2">
+                <img src="{{ url_for('static', filename='images/favicon.png') }}" alt="Logo" class="h-8 w-8 rounded-full">
+                <span class="text-white font-bold text-l navbar-title">Heart Disease Predictor</span>
+            </div>
+            <!-- Right side: Explore Projects Dropdown -->
+            <div class="relative">
+                <button id="projects-dropdown-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors duration-200 projects-button pulse-animation">
+                    <span class="text-l projects-button-text">Explore My Projects</span>
+                </button>
+                <div id="projects-dropdown-menu" class="dropdown-menu absolute mt-2 bg-white rounded-md shadow-lg z-10 right-0">
+                    <a href="https://brain-tumor-detection-jeet.onrender.com" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors duration-200 rounded-md">Brain Tumor Detection</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="p-6 md:p-12 min-h-[calc(100vh-64px)] flex items-center justify-center">
+        <div class="text-center max-w-2xl lg:max-w-4xl mx-auto flex flex-col items-center">
+            <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight mb-4 animate-pulse">
+                Your Heart Health, Simplified.
+            </h1>
+            <p class="text-lg sm:text-xl font-light mb-20">
+                Take a proactive step towards understanding your heart's well-being. Our easy-to-use tool provides an instant health assessment based on key indicators.
+            </p>
+            <a href="/form" class="inline-block bg-white text-blue-600 font-bold py-3 px-8 rounded-full shadow-lg hover:bg-gray-100 transition duration-300 ease-in-out transform hover:scale-105">
+                Check Your Heart
             </a>
         </div>
     </div>
 
+    <!-- Social Links Section -->
+    <footer class="text-center py-8 bg-[#1a202c]">
+        <p class="text-white text-lg font-light mb-4">Let's Connect</p>
+        <div class="flex justify-center space-x-6">
+            <a href="mailto:jeet0912majumder@gmail.com" class="social-link" aria-label="Email">
+                <i class="fas fa-envelope text-2xl"></i>
+            </a>
+            <a href="https://github.com/Jeet-047" class="social-link" aria-label="GitHub">
+                <i class="fab fa-github text-2xl"></i>
+            </a>
+            <a href="https://www.linkedin.com/in/jeet0912majumder" class="social-link" aria-label="LinkedIn">
+                <i class="fab fa-linkedin text-2xl"></i>
+            </a>
+            <a href="https://www.kaggle.com/jeet047" class="social-link" aria-label="Kaggle">
+                <i class="fab fa-kaggle text-2xl"></i>
+            </a>
+        </div>
+    </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const dropdownBtn = document.getElementById('projects-dropdown-btn');
+            const dropdownMenu = document.getElementById('projects-dropdown-menu');
+
+            dropdownBtn.addEventListener('click', function () {
+                dropdownMenu.classList.toggle('active');
+            });
+
+            // Close the dropdown menu if the user clicks outside of it
+            window.addEventListener('click', function (event) {
+                if (!dropdownBtn.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                    dropdownMenu.classList.remove('active');
+                }
+            });
+        });
+    </script>
 </body>
 </html>

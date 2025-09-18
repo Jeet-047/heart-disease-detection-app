@@ -1,0 +1,4 @@
+# Add other app under URLs section
+URLS: {
+  BRAIN_TUMOR_APP: "https://brain-tumor-detection-jeet.onrender.com"
+}

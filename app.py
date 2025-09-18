@@ -1,22 +1,38 @@
 from flask import Flask, render_template, request
+import threading
+import urllib.request
 import joblib
 import numpy as np
 import pandas as pd
 import os
-
-"""
-Flask-based ML app for heart disease prediction with an improved frontend.
-
-Instructions to run:
-1. Make sure you have 'flask', 'numpy', and 'scikit-learn' installed:
-   pip install Flask numpy scikit-learn
-2. Ensure you have the 'model.pkl' file in the same directory.
-3. Run this application from your terminal:
-   python app.py
-4. Open your web browser and go to http://127.0.0.1:5000
-"""
+import yaml
 
 app = Flask(__name__)
+
+# Global flag to ensure wake-up runs only once
+wake_up_ran = False
+
+def wake_up_other_apps():
+    model_info = {}
+    with open("model_info.yaml", "r") as f:
+        model_info = yaml.safe_load(f)
+    
+    urls = model_info.get("URLS", {})
+    for app_name, url in urls.items():
+        try:
+            print(f"Waking up {app_name} at {url}")
+            urllib.request.urlopen(url, timeout=120)
+            print(f"{app_name} is awake!")
+        except Exception as e:
+            print(f"Failed to wake up {app_name}: {e}")
+
+@app.before_request
+def trigger_wake_up():
+    global wake_up_ran
+    if not wake_up_ran:
+        wake_up_ran = True
+        # run wake up in a background thread so the request is not slowed down
+        threading.Thread(target=wake_up_other_apps, daemon=True).start()
 
 # Try to load the model. If the file doesn't exist, provide a clear error.
 try:
