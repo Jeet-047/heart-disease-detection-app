@@ -6,6 +6,7 @@ import numpy as np
 import pandas as pd
 import os
 import yaml
+import logging
 
 app = Flask(__name__)
 
@@ -20,11 +21,11 @@ def wake_up_other_apps():
     urls = model_info.get("URLS", {})
     for app_name, url in urls.items():
         try:
-            print(f"Waking up {app_name} at {url}")
+            logging.info(f"Waking up {app_name} at {url}")
             urllib.request.urlopen(url, timeout=120)
-            print(f"{app_name} is awake!")
+            logging.info(f"{app_name} is awake!")
         except Exception as e:
-            print(f"Failed to wake up {app_name}: {e}")
+            logging.error(f"Failed to wake up {app_name}: {e}")
 
 @app.before_request
 def trigger_wake_up():
@@ -45,6 +46,10 @@ except FileNotFoundError:
 except Exception as e:
     model = None
     print(f"An error occurred while loading the model: {e}")
+
+@app.route("/ping", methods=["GET"])
+def ping():
+    return "OK", 200
 
 @app.route('/')
 def home():
